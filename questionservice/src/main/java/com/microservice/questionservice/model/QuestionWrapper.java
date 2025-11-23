@@ -2,12 +2,14 @@ package com.microservice.questionservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //Created QuestionWrapper model to return only specific column
 //of question table
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class QuestionWrapper {
 
     private Integer id;
