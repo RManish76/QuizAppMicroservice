@@ -1,0 +1,40 @@
+// {
+//     "configurations": [
+        
+//         {
+//             "type": "java",
+//             "name": "Spring Boot-QuestionserviceApplication<questionservice>",
+//             "request": "launch",
+//             "cwd": "${workspaceFolder}",
+//             "mainClass": "com.microservice.questionservice.QuestionserviceApplication",
+//             "projectName": "questionservice",
+//             "args": "",
+//             "envFile": "${workspaceFolder}/.env"
+//         }
+//     ]
+// }
+
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Questionservice (Default 8080)",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservice.questionservice.QuestionserviceApplication",
+            "projectName": "questionservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Questionservice (Instance 2 - 8081)",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservice.questionservice.QuestionserviceApplication",
+            "projectName": "questionservice",
+            "vmArgs": "-Dserver.port=8081",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
