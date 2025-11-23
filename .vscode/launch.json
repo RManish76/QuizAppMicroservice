@@ -35,6 +35,16 @@
             "projectName": "questionservice",
             "vmArgs": "-Dserver.port=8081",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-QuizserviceApplication<quizservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservice.quizservice.QuizserviceApplication",
+            "projectName": "quizservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
