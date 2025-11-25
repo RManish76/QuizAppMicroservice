@@ -6,6 +6,6 @@ import lombok.Data;
 public class QuizDto {
     //DTO - Data Transfer Object
     private String categoryName;
-    private String numQuestions;
+    private Integer numQuestions;
     private String title;
 }

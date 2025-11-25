@@ -16,6 +16,7 @@ import com.microservice.questionservice.model.Question;
 import com.microservice.questionservice.model.QuestionWrapper;
 import com.microservice.questionservice.model.UserResponse;
 import com.microservice.questionservice.service.QuestionService;
+import org.springframework.core.env.Environment;
 
 
 
@@ -25,6 +26,10 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    Environment environment; //use to get details of enviorment such as port number of instance
+
     
     // @Autowired
     // public void setQuestionService(QuestionService questionService) {
@@ -57,6 +62,7 @@ public class QuestionController {
     @PostMapping("getQuestions")
     //below controller for quiz, so that it can request question as per questionid
     public ResponseEntity<List<QuestionWrapper>> getQuestionsFromId(@RequestBody List<Integer> questionIds){
+        System.out.println(environment.getProperty("local.server.port")); //will print the port when request made, and we'll able to see loadbalancing
         return questionService.getQuestionsFromId(questionIds);
     }
 
