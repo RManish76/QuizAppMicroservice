@@ -45,6 +45,16 @@
             "projectName": "quizservice",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ServiceregistryApplication<serviceregistry>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservice.serviceregistry.ServiceregistryApplication",
+            "projectName": "serviceregistry",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
