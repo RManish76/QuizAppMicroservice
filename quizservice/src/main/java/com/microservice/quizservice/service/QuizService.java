@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.microservice.quizservice.dao.QuizDao;
+import com.microservice.quizservice.fiegn.QuizInterface;
 import com.microservice.quizservice.model.QuestionWrapper;
+import com.microservice.quizservice.model.Quiz;
+import com.microservice.quizservice.model.UserResponse;
 
 
 
@@ -21,43 +24,36 @@ public class QuizService {
     @Autowired
     private QuizDao quizDao;
 
+    @Autowired
+    QuizInterface quizInterface;
+
+    
     
     public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
-        //call the generate url of question microservice - using RestTemplate of SpringFramwork
-        //generate url = http://localhost:8080/question/generate  (bad not recomended hardcoding)
-        //use OpenFiegn - helps in articulating the rest requests/response
-        //use Service Discovery Client - to find the rest of other service and link it
-        //                        every microservice rest will be registed in Discovery client
-        //                        we'll use Eureka which from netflix for this which will be another spingboot project
-
+        List<Integer>questions = quizInterface.getQuestionsForQuiz(category,numQ).getBody();
+        Quiz quiz =new Quiz();
+        quiz.setTitle(title);
+        quiz.setQuestionId(questions);
+        quizDao.save(quiz);
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Integer id) {
         Optional<Quiz> quiz = quizDao.findById(id);
-        List<Question> questionFromDB = quiz.get().getQuestions();
-        List<QuestionWrapper> questionsForUser = new ArrayList<>();
+        List<Integer> questionIdFromDB = quiz.get().getQuestionId();
+        ResponseEntity<List<QuestionWrapper>> questionsForUser = quizInterface.getQuestionsFromId(questionIdFromDB);
         
-        for(Question q : questionFromDB){
-            QuestionWrapper qw = new QuestionWrapper(q.getId(), q.getQuestionTitle(), q.getOption1(), q.getOption2(), q.getOption3(), q.getOption4());
-            questionsForUser.add(qw);
-        }
+        // for(Question q : questionFromDB){
+        //     QuestionWrapper qw = new QuestionWrapper(q.getId(), q.getQuestionTitle(), q.getOption1(), q.getOption2(), q.getOption3(), q.getOption4());
+        //     questionsForUser.add(qw);
+        // }
 
 
-        return new ResponseEntity<>(questionsForUser,HttpStatus.OK);
+        return questionsForUser;
     }
 
     public ResponseEntity<Integer> submitQuiz(Integer id, List<UserResponse> userResponse) {
-        Quiz quiz = quizDao.findById(id).get();
-        java.util.Map<Integer, Question> questionMap = quiz.getQuestions().stream()
-                .collect(Collectors.toMap(Question::getId, q -> q));
-
-        int right = 0;
-        for(UserResponse ur : userResponse){
-            if(questionMap.containsKey(ur.getId()) && ur.getResponse().equals(questionMap.get(ur.getId()).getRightAnswer())){
-                right++;
-            }
-        }
-        return new ResponseEntity<>(right,HttpStatus.OK);
+        ResponseEntity<Integer> score = quizInterface.getScore(userResponse);
+        return score;
     }
 }
